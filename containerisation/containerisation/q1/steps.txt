@@ -1,0 +1,57 @@
+BUILD AND RUN A DOCKER CONTAINER FOR NGINX 
+1. Create a Dockerfile and add the commands to install nginx
+2. Create the image using the command
+	docker build . -t nginximage:latest
+3. After the image is created, build a container and map port 8080 to it
+	docker run -dit -p 8080:80 nginximage:latest
+
+
+UPLOAD AN IMAGE TO DOCKER HUB
+1. In the console login to DockerHub
+2. Create a repository 
+3. In the terminal log in to docker
+4. Tag the image created in the last step as follows
+	docker tag 1d0a35233731 vikas987docker/nginximage:latest
+5. Push the image to DockerHub
+	docker push vikas987docker/nginximage:latest
+6. Now this image can be pulled and run as follows :
+	docker run -dit -p 8080:80 vikas987docker/nginximage
+   This will pull the latest image and run
+
+
+UPLOAD AN IMAGE TO ECR (Using EC2 instance)
+1. Create an EC2 instance with full access IAM role
+2. Create a repo in ECR to upload the images to
+3. SSH into the EC2 instance and install aws cli and docker in the instance.
+4. Pull the image uploaded to dockerhub shown above using
+	docker pull vikas987docker/nginximage:latest
+5. Now login to AWS ECR using the command
+	$(aws ecr get-login --no-include-email --region us-east-1)
+6. Tag the image using
+	docker tag imageID 488599217855.dkr.ecr.us-east-1.amazonaws.com/first_docker_repo:latest
+7. Now push the image using
+	docker push 488599217855.dkr.ecr.us-east-1.amazonaws.com/first_docker_repo:latest
+
+
+
+UPLOAD AN IMAGE TO GCR
+1. In the terminal, login to gcloud using the command
+	gcloud auth login
+   Set the project id
+2. Tag the image created using the following command
+	docker tag imageID asia.gcr.io/pe-training/new-new:latest
+   where asia.gcr.io is the host name, pe traiining is the project and shriram-q1-a1 is the image tag
+3. Push the image using the command
+	docker push asia.gcr.io/pe-training/new-new:latest
+4. Now this image can be pulled and run as follows :
+	docker run -dit -p 8080:80 asia.gcr.io/pe-training/new-new:latest
+
+
+
+RUNNING BASH ON NGINX CONTAINER
+1. Once the container is created, run the command
+	docker exec -it containerID bash
+2. Now a terminal opens and you can install nano using the command
+	apt-get install nano
+
+
